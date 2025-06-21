@@ -1,0 +1,850 @@
+.settingsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-md);
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  font-size: 1.125rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(5, 150, 105, 0.1);
+}
+
+.settingsButton:hover {
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-emerald);
+}
+
+.settingsButton:active {
+  transform: rotate(90deg) scale(1.05);
+}
+
+.settingsButton:focus-visible {
+  outline: 2px solid var(--color-primary-emerald);
+  outline-offset: 2px;
+}
+
+.settingsButton.active {
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  transform: rotate(180deg);
+  animation: settingsActive 2s ease-in-out infinite;
+}
+
+@keyframes settingsActive {
+  0%, 100% {
+    box-shadow: var(--shadow-lg);
+  }
+  50% {
+    box-shadow: var(--shadow-xl), 0 0 20px rgba(5, 150, 105, 0.3);
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+  }
+}
+
+.modalContent {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid rgba(5, 150, 105, 0.1);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modalContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 150, 105, 0.02) 0%,
+    rgba(245, 158, 11, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem;
+  border-bottom: 1px solid rgba(5, 150, 105, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(5, 150, 105, 0.05) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
+  position: relative;
+  z-index: 1;
+}
+
+.modalTitle {
+  font-size: 1.625rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary-emerald), var(--color-accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modalTitle::before {
+  content: '⚙️';
+  font-size: 1.25rem;
+  -webkit-text-fill-color: initial;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.125rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.closeButton:hover {
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.closeButton:active {
+  transform: rotate(90deg) scale(1.05);
+}
+
+.closeButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover::before {
+  width: 50px;
+  height: 50px;
+}
+
+.settingsContent {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.settingsSection {
+  margin-bottom: 2rem;
+}
+
+.settingsSection:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-accent-gold);
+}
+
+.settingItem {
+  margin-bottom: 1.5rem;
+}
+
+.settingItem:last-child {
+  margin-bottom: 0;
+}
+
+.settingLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.settingInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid rgba(0, 102, 102, 0.2);
+  border-radius: 0.5rem;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.settingInput:focus {
+  outline: none;
+  border-color: var(--color-primary-teal);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
+}
+
+.settingSlider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(0, 102, 102, 0.2);
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.settingSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary-teal);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.settingSlider::-webkit-slider-thumb:hover {
+  background: var(--color-primary-teal-light);
+  transform: scale(1.1);
+}
+
+.settingSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary-teal);
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.settingSlider::-moz-range-thumb:hover {
+  background: var(--color-primary-teal-light);
+  transform: scale(1.1);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  margin: 0;
+}
+
+.settingCheckbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 102, 102, 0.3);
+  border-radius: 4px;
+  background: var(--color-background);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.settingCheckbox:checked {
+  background: var(--color-primary-teal);
+  border-color: var(--color-primary-teal);
+}
+
+.settingCheckbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.settingCheckbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.2);
+}
+
+
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 0.5rem;
+  }
+  
+  .modalContent {
+    max-height: 90vh;
+  }
+  
+  .modalHeader {
+    padding: 1rem;
+  }
+  
+  .settingsContent {
+    padding: 1rem;
+  }
+  
+  .settingsButton {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    border-radius: 0.5rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.25rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1rem;
+  }
+}
+
+.settingSlider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(5, 150, 105, 0.2);
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.settingSlider:hover {
+  background: rgba(5, 150, 105, 0.3);
+}
+
+.settingSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary-emerald);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-md);
+  border: 3px solid var(--color-surface);
+}
+
+.settingSlider::-webkit-slider-thumb:hover {
+  background: var(--color-primary-emerald-light);
+  transform: scale(1.2);
+  box-shadow: var(--shadow-lg);
+}
+
+.settingSlider::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+}
+
+.settingSlider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary-emerald);
+  cursor: pointer;
+  border: 3px solid var(--color-surface);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-md);
+}
+
+.settingSlider::-moz-range-thumb:hover {
+  background: var(--color-primary-emerald-light);
+  transform: scale(1.2);
+  box-shadow: var(--shadow-lg);
+}
+
+.settingSlider::-moz-range-track {
+  background: rgba(5, 150, 105, 0.2);
+  height: 8px;
+  border-radius: 4px;
+}
+
+.sliderContainer {
+  position: relative;
+  margin: 0.5rem 0;
+}
+
+.sliderValue {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.sliderContainer:hover .sliderValue {
+  opacity: 1;
+}
+
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  margin: 0;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.checkboxLabel:hover {
+  color: var(--color-primary-emerald);
+}
+
+.settingCheckbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(5, 150, 105, 0.3);
+  border-radius: 6px;
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.settingCheckbox:checked {
+  background: var(--color-primary-emerald);
+  border-color: var(--color-primary-emerald);
+  transform: scale(1.05);
+}
+
+.settingCheckbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-inverse);
+  font-size: 14px;
+  font-weight: bold;
+  animation: checkmarkPop 0.3s ease-out;
+}
+
+.settingCheckbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.2);
+}
+
+.settingCheckbox:hover {
+  border-color: var(--color-primary-emerald);
+  transform: scale(1.02);
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 150, 105, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 28px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggleSlider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background: var(--color-surface);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+}
+
+.toggleSwitch input:checked + .toggleSlider {
+  background: var(--color-primary-emerald);
+}
+
+.toggleSwitch input:checked + .toggleSlider:before {
+  transform: translateX(24px);
+  background: var(--color-text-inverse);
+}
+
+.toggleSwitch:hover .toggleSlider {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 8px rgba(5, 150, 105, 0.3);
+}
+
+
+.settingSelect {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid rgba(5, 150, 105, 0.2);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 3rem;
+}
+
+.settingSelect:focus {
+  outline: none;
+  border-color: var(--color-primary-emerald);
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+  transform: translateY(-1px);
+}
+
+.settingSelect:hover {
+  border-color: rgba(5, 150, 105, 0.3);
+}
+
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.buttonGroupItem {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: 2px solid rgba(5, 150, 105, 0.2);
+  background: transparent;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.buttonGroupItem:hover {
+  border-color: var(--color-primary-emerald);
+  background: rgba(5, 150, 105, 0.05);
+  transform: translateY(-1px);
+}
+
+.buttonGroupItem.active {
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary-emerald);
+  box-shadow: var(--shadow-md);
+}
+
+
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(5, 150, 105, 0.15);
+  background: var(--color-background-secondary);
+}
+
+.actionButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.actionButton.primary {
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-md);
+}
+
+.actionButton.primary:hover {
+  background: var(--color-primary-emerald-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.actionButton.secondary {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 2px solid rgba(5, 150, 105, 0.2);
+}
+
+.actionButton.secondary:hover {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  border-color: var(--color-primary-emerald);
+}
+
+
+@media (max-width: 480px) {
+  .settingsButton {
+    width: 44px;
+    height: 44px;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+  }
+  
+  .modalOverlay {
+    padding: 0.5rem;
+  }
+  
+  .modalContent {
+    max-height: 95vh;
+    border-radius: var(--radius-lg);
+  }
+  
+  .modalHeader {
+    padding: 1.25rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.375rem;
+  }
+  
+  .settingsContent {
+    padding: 1rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.125rem;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+  }
+  
+  .buttonGroupItem {
+    min-width: auto;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .actionButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+  
+  .settingsContent {
+    padding: 1.25rem;
+  }
+  
+  .sliderContainer {
+    margin: 1rem 0;
+  }
+}
+
+
+@media (prefers-contrast: high) {
+  .modalContent {
+    border: 3px solid var(--color-text-primary);
+  }
+  
+  .settingCheckbox {
+    border-width: 3px;
+  }
+  
+  .settingInput,
+  .settingSelect {
+    border-width: 3px;
+  }
+  
+  .toggleSlider {
+    border: 2px solid var(--color-text-primary);
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .settingsButton.active,
+  .modalOverlay,
+  .modalContent {
+    animation: none;
+  }
+  
+  .settingsButton:hover,
+  .closeButton:hover,
+  .actionButton:hover {
+    transform: none;
+  }
+  
+  .settingCheckbox:checked::after {
+    animation: none;
+  }
+  
+  * {
+    transition: none !important;
+  }
+}
+
+
+.settingsContent:focus-within .settingItem {
+  outline: 2px solid var(--color-primary-emerald);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+
+.settingsContent.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.settingsContent.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 3px solid var(--color-primary-emerald);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

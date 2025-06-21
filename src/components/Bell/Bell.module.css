@@ -1,0 +1,312 @@
+
+.bellOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+
+.bellContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
+}
+
+
+.bellIcon {
+  position: relative;
+  color: var(--color-accent-gold, #DAA520);
+  margin-bottom: 1.5rem;
+  z-index: 2;
+}
+
+.bellSvg {
+  animation: bellRing 0.8s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(218, 165, 32, 0.3));
+}
+
+
+.pulseRing1,
+.pulseRing2,
+.pulseRing3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--color-accent-gold, #DAA520);
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.pulseRing1 {
+  width: 100px;
+  height: 100px;
+  animation: pulse 2s ease-out infinite;
+}
+
+.pulseRing2 {
+  width: 120px;
+  height: 120px;
+  animation: pulse 2s ease-out infinite 0.5s;
+}
+
+.pulseRing3 {
+  width: 140px;
+  height: 140px;
+  animation: pulse 2s ease-out infinite 1s;
+}
+
+
+.message {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary, #2C3E50);
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, var(--color-primary-teal, #006666), var(--color-accent-gold, #DAA520));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #7F8C8D);
+  margin: 0;
+  opacity: 0.8;
+}
+
+
+.stopButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  margin-bottom: 1rem;
+  animation: buttonPulse 1.5s ease-in-out infinite;
+}
+
+.stopButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+  background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+.stopButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.stopButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+}
+
+
+.instructions {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #7F8C8D);
+  opacity: 0.7;
+}
+
+.instructions kbd {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+
+.flashBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.1) 0%, transparent 70%);
+  animation: backgroundFlash 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bellRing {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(-10deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+@keyframes textGlow {
+  0% {
+    text-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(218, 165, 32, 0.6);
+  }
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes backgroundFlash {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .bellContainer {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .stopButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .bellSvg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .pulseRing1 {
+    width: 80px;
+    height: 80px;
+  }
+
+  .pulseRing2 {
+    width: 100px;
+    height: 100px;
+  }
+
+  .pulseRing3 {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+
+@media (prefers-contrast: high) {
+  .bellContainer {
+    background: white;
+    border: 2px solid black;
+  }
+
+  .title {
+    -webkit-text-fill-color: initial;
+    background: none;
+    color: black;
+  }
+
+  .stopButton {
+    background: #d32f2f;
+    border: 2px solid black;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .bellSvg,
+  .pulseRing1,
+  .pulseRing2,
+  .pulseRing3,
+  .stopButton,
+  .flashBackground {
+    animation: none;
+  }
+
+  .title {
+    animation: none;
+    text-shadow: none;
+  }
+}

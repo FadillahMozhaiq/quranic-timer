@@ -1,0 +1,557 @@
+.circularTimer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: var(--timer-size, 300px);
+  height: var(--timer-size, 300px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    var(--color-surface) 0%,
+    var(--color-background-secondary) 100%
+  );
+  box-shadow:
+    var(--shadow-islamic),
+    inset 0 0 20px rgba(5, 150, 105, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.circularTimer.active {
+  animation: timerPulse 3s ease-in-out infinite;
+  box-shadow:
+    var(--shadow-islamic),
+    0 0 30px rgba(5, 150, 105, 0.3),
+    inset 0 0 20px rgba(5, 150, 105, 0.15);
+}
+
+.circularTimer.workMode {
+  --timer-color: var(--color-primary-emerald);
+  --timer-glow: rgba(5, 150, 105, 0.4);
+}
+
+.circularTimer.breakMode {
+  --timer-color: var(--color-accent-gold);
+  --timer-glow: rgba(245, 158, 11, 0.4);
+}
+
+.timerSvg {
+  transform: rotate(-90deg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+.backgroundCircle {
+  opacity: 0.15;
+  stroke: var(--timer-color, var(--color-primary-emerald));
+  stroke-width: 8;
+  fill: none;
+}
+
+.progressCircle {
+  stroke: var(--timer-color, var(--color-primary-emerald));
+  stroke-width: 12;
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 12px var(--timer-glow, rgba(5, 150, 105, 0.4)));
+}
+
+.progressCircle.animated {
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+.patternOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 30% 30%, var(--color-accent-gold) 1px, transparent 1px),
+    radial-gradient(circle at 70% 70%, var(--color-primary-emerald) 0.5px, transparent 0.5px);
+  background-size: 25px 25px, 15px 15px;
+  opacity: 0.08;
+  animation: patternRotate 30s linear infinite;
+}
+
+@keyframes patternRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes progressGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px var(--timer-glow, rgba(5, 150, 105, 0.4)));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px var(--timer-glow, rgba(5, 150, 105, 0.6)));
+  }
+}
+
+.timeDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--color-text-primary);
+  z-index: 2;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeDisplay:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translate(-50%, -50%) scale(1.02);
+}
+
+.timeText {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+  line-height: 0.9;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--timer-color, var(--color-primary-emerald)), var(--color-accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  letter-spacing: -0.02em;
+  transition: all 0.3s ease;
+}
+
+.timeText.pulsing {
+  animation: textPulse 1s ease-in-out infinite;
+}
+
+.sessionType {
+  font-size: clamp(0.875rem, 3vw, 1.125rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--timer-color, var(--color-primary-emerald));
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.sessionProgress {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+.timerControls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.controlButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 0 rgba(5, 150, 105, 0.4);
+  font-size: 1.25rem;
+  min-height: 44px; 
+}
+
+.controlButton:hover {
+  background: var(--color-primary-emerald-light);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 8px rgba(5, 150, 105, 0.2);
+}
+
+.controlButton:active {
+  transform: translateY(-1px) scale(1.02);
+  transition-duration: 0.1s;
+}
+
+.controlButton:focus-visible {
+  outline: 2px solid var(--color-primary-emerald);
+  outline-offset: 4px;
+}
+
+.controlButton.primary {
+  width: 88px;
+  height: 88px;
+  background: var(--color-accent-gold);
+  font-size: 1.5rem;
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 0 rgba(245, 158, 11, 0.4);
+}
+
+.controlButton.primary:hover {
+  background: var(--color-accent-gold-light);
+  box-shadow:
+    var(--shadow-xl),
+    0 0 0 8px rgba(245, 158, 11, 0.2);
+  transform: translateY(-4px) scale(1.08);
+}
+
+.controlButton.secondary {
+  background: var(--color-deep-blue);
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 0 rgba(30, 64, 175, 0.4);
+}
+
+.controlButton.secondary:hover {
+  background: var(--color-deep-blue-light);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 8px rgba(30, 64, 175, 0.2);
+}
+
+.controlButton.danger {
+  background: var(--color-error);
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 0 rgba(239, 68, 68, 0.4);
+}
+
+.controlButton.danger:hover {
+  background: #dc2626;
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 8px rgba(239, 68, 68, 0.2);
+}
+
+.controlButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.controlButton:hover::before {
+  width: 140px;
+  height: 140px;
+}
+
+.controlButton > * {
+  position: relative;
+  z-index: 1;
+}
+
+.controlButton.loading {
+  pointer-events: none;
+}
+
+.controlButton.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 2;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sessionDisplay {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sessionCounter {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.sessionToggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.sessionButton {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-primary-emerald);
+  background: transparent;
+  color: var(--color-primary-emerald);
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  font-size: 0.875rem;
+  min-height: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sessionButton.active {
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-md);
+}
+
+.sessionButton:hover {
+  background: var(--color-primary-emerald);
+  color: var(--color-text-inverse);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.sessionButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.sessionButton:hover::before {
+  left: 100%;
+}
+
+@keyframes timerPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      var(--shadow-islamic),
+      0 0 30px rgba(5, 150, 105, 0.2);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow:
+      var(--shadow-islamic),
+      0 0 40px rgba(5, 150, 105, 0.4);
+  }
+}
+
+@keyframes sessionTransition {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95) rotate(180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.circularTimer.transitioning {
+  animation: sessionTransition 1s ease-in-out;
+}
+
+
+@media (max-width: 480px) {
+  .circularTimer {
+    --timer-size: 220px;
+  }
+  
+  .timeDisplay {
+    padding: var(--spacing-sm);
+  }
+  
+  .timeText {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+    margin-bottom: 0.5rem;
+  }
+  
+  .sessionType {
+    font-size: 0.75rem;
+  }
+  
+  .timerControls {
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .controlButton {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+  }
+  
+  .controlButton.primary {
+    width: 64px;
+    height: 64px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .circularTimer {
+    --timer-size: 280px;
+  }
+  
+  .timeDisplay {
+    padding: var(--spacing-md);
+  }
+  
+  .timerControls {
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  
+  .controlButton {
+    width: 56px;
+    height: 56px;
+    font-size: 1.125rem;
+  }
+  
+  .controlButton.primary {
+    width: 76px;
+    height: 76px;
+    font-size: 1.375rem;
+  }
+  
+  .timeText {
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .circularTimer {
+    --timer-size: 320px;
+  }
+  
+  .controlButton {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .controlButton.primary {
+    width: 84px;
+    height: 84px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .circularTimer {
+    --timer-size: 380px;
+  }
+  
+  .timeDisplay {
+    padding: var(--spacing-lg);
+  }
+  
+  .controlButton {
+    width: 68px;
+    height: 68px;
+  }
+  
+  .controlButton.primary {
+    width: 92px;
+    height: 92px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .circularTimer {
+    --timer-size: 420px;
+  }
+  
+  .timeText {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+  }
+}
+
+
+@media (prefers-contrast: high) {
+  .timeDisplay {
+    background: var(--color-surface);
+    border: 2px solid var(--color-text-primary);
+  }
+  
+  .timeText {
+    -webkit-text-fill-color: var(--color-text-primary);
+    background: none;
+  }
+  
+  .progressCircle {
+    filter: none;
+    stroke-width: 14;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .circularTimer.active,
+  .progressCircle.animated,
+  .patternOverlay,
+  .timeText.pulsing {
+    animation: none;
+  }
+  
+  .controlButton:hover {
+    transform: none;
+  }
+  
+  .timerSvg,
+  .timeDisplay,
+  .controlButton {
+    transition: none;
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "playlists": [
+    {
+      "id": "quran-lofi",
+      "name": "Lo-Fi Quranic Recitations",
+      "description": "Peaceful lo-fi versions of Quranic recitations for focused work",
+      "tracks": [
+        {
+          "id": 1,
+          "title": "Surah Al-Fatiha (Lo-Fi)",
+          "reciter": "Various Artists",
+          "duration": 180,
+          "url": "/audio/tracks/fatiha-lofi.mp3",
+          "surah": "Al-Fatiha",
+          "verses": "1-7"
+        },
+        {
+          "id": 2,
+          "title": "Surah Al-Baqarah (Excerpt - Lo-Fi)",
+          "reciter": "Various Artists", 
+          "duration": 300,
+          "url": "/audio/tracks/baqarah-excerpt-lofi.mp3",
+          "surah": "Al-Baqarah",
+          "verses": "1-10"
+        },
+        {
+          "id": 3,
+          "title": "Surah Ar-Rahman (Lo-Fi)",
+          "reciter": "Various Artists",
+          "duration": 420,
+          "url": "/audio/tracks/rahman-lofi.mp3",
+          "surah": "Ar-Rahman",
+          "verses": "1-20"
+        },
+        {
+          "id": 4,
+          "title": "Surah Al-Mulk (Lo-Fi)",
+          "reciter": "Various Artists",
+          "duration": 360,
+          "url": "/audio/tracks/mulk-lofi.mp3",
+          "surah": "Al-Mulk",
+          "verses": "1-15"
+        },
+        {
+          "id": 5,
+          "title": "Surah Ya-Sin (Excerpt - Lo-Fi)",
+          "reciter": "Various Artists",
+          "duration": 480,
+          "url": "/audio/tracks/yasin-excerpt-lofi.mp3",
+          "surah": "Ya-Sin",
+          "verses": "1-25"
+        }
+      ]
+    },
+    {
+      "id": "nature-sounds",
+      "name": "Islamic Nature Sounds",
+      "description": "Natural sounds for peaceful concentration",
+      "tracks": [
+        {
+          "id": 6,
+          "title": "Rain in Mecca",
+          "reciter": "Nature",
+          "duration": 600,
+          "url": "/audio/nature/rain-mecca.mp3",
+          "surah": null,
+          "verses": null
+        },
+        {
+          "id": 7,
+          "title": "Desert Wind",
+          "reciter": "Nature",
+          "duration": 720,
+          "url": "/audio/nature/desert-wind.mp3",
+          "surah": null,
+          "verses": null
+        }
+      ]
+    }
+  ],
+  "notifications": {
+    "workStart": {
+      "title": "Work Session Started",
+      "sound": "/audio/notifications/work-start.mp3",
+      "duration": 2
+    },
+    "breakStart": {
+      "title": "Break Time",
+      "sound": "/audio/notifications/break-start.mp3",
+      "duration": 2
+    },
+    "sessionComplete": {
+      "title": "Session Complete",
+      "sound": "/audio/notifications/session-complete.mp3",
+      "duration": 3
+    },
+    "timerComplete": {
+      "title": "Timer Cycle Complete",
+      "sound": "/audio/notifications/timer-complete.mp3",
+      "duration": 4
+    }
+  },
+  "settings": {
+    "defaultPlaylist": "quran-lofi",
+    "autoPlay": true,
+    "crossfade": true,
+    "fadeInDuration": 2,
+    "fadeOutDuration": 2
+  }
+}
