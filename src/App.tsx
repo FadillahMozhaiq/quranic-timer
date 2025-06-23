@@ -9,6 +9,7 @@ import {
 } from './context';
 import { CircularTimer } from './components/Timer/CircularTimer';
 import { TimerControls } from './components/Timer/TimerControls';
+import { ModeSelector } from './components/Timer/ModeSelector';
 import { AudioPlayer } from './components/Audio/AudioPlayer';
 import { SessionSettings } from './components/Settings/SessionSettings';
 import { Bell } from './components/Bell/Bell';
@@ -44,6 +45,7 @@ function AppContent() {
 
       <main className="app-main">
         <div className="timer-container">
+          <ModeSelector />
           <CircularTimer />
           <TimerControls />
         </div>

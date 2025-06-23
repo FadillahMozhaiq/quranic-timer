@@ -1,0 +1,171 @@
+.modeSelector {
+  display: flex;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 0.25rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.modeSelector::before {
+  content: '';
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  width: calc(50% - 0.25rem);
+  background: var(--color-primary-emerald);
+  border-radius: calc(var(--radius-lg) - 0.25rem);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  box-shadow: var(--shadow-md);
+}
+
+.modeSelector:has(.modeTab:nth-child(2).active)::before {
+  transform: translateX(100%);
+  background: var(--color-accent-gold);
+}
+
+.modeTab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: calc(var(--radius-lg) - 0.25rem);
+  position: relative;
+  z-index: 1;
+  min-height: 44px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modeTab:hover {
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+.modeTab:focus-visible {
+  outline: 2px solid var(--color-primary-emerald);
+  outline-offset: 2px;
+}
+
+.modeTab.active {
+  color: var(--color-text-inverse);
+  font-weight: 600;
+}
+
+.modeTab.active:hover {
+  transform: none;
+}
+
+.tabIcon {
+  font-size: 1.125rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modeTab:hover .tabIcon {
+  transform: scale(1.1);
+}
+
+.modeTab.active .tabIcon {
+  transform: scale(1.05);
+}
+
+.tabLabel {
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .modeSelector {
+    margin-bottom: 1.5rem;
+  }
+  
+  .modeTab {
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+    gap: 0.375rem;
+  }
+  
+  .tabIcon {
+    font-size: 1rem;
+  }
+  
+  .tabLabel {
+    display: none;
+  }
+}
+
+@media (max-width: 320px) {
+  .modeTab {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .tabIcon {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .modeTab {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .modeSelector {
+    margin-bottom: 2.5rem;
+  }
+  
+  .modeTab {
+    padding: 1rem 2rem;
+    font-size: 0.9375rem;
+    gap: 0.625rem;
+  }
+  
+  .tabIcon {
+    font-size: 1.25rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .modeSelector {
+    border-width: 2px;
+  }
+  
+  .modeTab.active {
+    font-weight: 700;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .modeSelector::before,
+  .modeTab,
+  .tabIcon {
+    transition: none;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .modeSelector {
+    background: var(--color-background-secondary, #1f2937);
+    border-color: var(--color-border-dark, #374151);
+  }
+}
