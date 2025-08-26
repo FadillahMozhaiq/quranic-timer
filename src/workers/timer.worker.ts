@@ -18,10 +18,10 @@ interface WorkerResponse {
   };
 }
 
-self.onmessage = function(e: MessageEvent<WorkerMessage>) {
+self.onmessage = function (e: MessageEvent<WorkerMessage>) {
   const { action, payload } = e.data;
-  
-  switch(action) {
+
+  switch (action) {
     case 'START':
       if (payload?.duration) {
         startTimer(payload.duration);
@@ -31,7 +31,7 @@ self.onmessage = function(e: MessageEvent<WorkerMessage>) {
       pauseTimer();
       break;
     case 'RESUME':
-      resumeTimer();
+      resumeTimer(payload?.duration);
       break;
     case 'RESET':
       resetTimer();
@@ -46,26 +46,26 @@ function startTimer(totalDuration: number) {
   if (timerId) {
     clearInterval(timerId);
   }
-  
+
   startTime = Date.now();
   duration = totalDuration * 1000;
   isPaused = false;
   pausedTime = 0;
-  
+
   timerId = setInterval(() => {
     if (isPaused) return;
-    
+
     const elapsed = Date.now() - startTime - pausedTime;
     const remaining = Math.max(0, duration - elapsed);
     const remainingSeconds = Math.ceil(remaining / 1000);
-    
+
     const response: WorkerResponse = {
       type: 'TICK',
       payload: { remaining: remainingSeconds }
     };
-    
+
     self.postMessage(response);
-    
+
     if (remaining <= 0) {
       const completeResponse: WorkerResponse = { type: 'COMPLETE' };
       self.postMessage(completeResponse);
@@ -84,10 +84,17 @@ function pauseTimer() {
   }
 }
 
-function resumeTimer() {
+function resumeTimer(remainingDuration?: number) {
   if (isPaused) {
     isPaused = false;
-    startTime = Date.now();
+    if (remainingDuration !== undefined) {
+      duration = remainingDuration * 1000;
+      startTime = Date.now();
+      pausedTime = 0;
+    } else {
+      startTime = Date.now() - (duration - (Date.now() - startTime - pausedTime));
+    }
+
     const response: WorkerResponse = { type: 'RESUMED' };
     self.postMessage(response);
   }
@@ -113,4 +120,4 @@ function stopTimer() {
   pausedTime = 0;
 }
 
-export {};
+export { };
