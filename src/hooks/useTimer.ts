@@ -29,14 +29,14 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
         isPaused: false,
         isBellRinging: false
       };
-    
+
     case 'PAUSE':
       return {
         ...state,
         isRunning: false,
         isPaused: true
       };
-    
+
     case 'RESET':
       return {
         ...state,
@@ -45,17 +45,17 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
         isBellRinging: false,
         currentTime: state.sessionType === 'work' ? initialSettings.workDuration : initialSettings.breakDuration
       };
-    
+
     case 'TICK':
       return {
         ...state,
         currentTime: action.payload.remaining
       };
-    
+
     case 'COMPLETE':
       const newSessionType = state.sessionType === 'work' ? 'break' : 'work';
       const newSessionCount = state.sessionType === 'work' ? state.sessionCount + 1 : state.sessionCount;
-      
+
       return {
         ...state,
         isRunning: false,
@@ -65,7 +65,7 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
         sessionCount: newSessionCount,
         currentTime: newSessionType === 'work' ? initialSettings.workDuration : initialSettings.breakDuration
       };
-    
+
     case 'SWITCH_SESSION':
       return {
         ...state,
@@ -75,26 +75,26 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
         isPaused: false,
         isBellRinging: false
       };
-    
+
     case 'UPDATE_SETTINGS':
       const updatedSettings = { ...initialSettings, ...action.payload };
       return {
         ...state,
         currentTime: state.sessionType === 'work' ? updatedSettings.workDuration : updatedSettings.breakDuration
       };
-    
+
     case 'START_BELL':
       return {
         ...state,
         isBellRinging: true
       };
-    
+
     case 'STOP_BELL':
       return {
         ...state,
         isBellRinging: false
       };
-    
+
     default:
       return state;
   }
@@ -118,7 +118,7 @@ export function useTimer(settings: TimerSettings = initialSettings) {
 
     workerRef.current.onmessage = (e) => {
       const { type, payload } = e.data;
-      
+
       switch (type) {
         case 'TICK':
           dispatch({ type: 'TICK', payload });
@@ -137,7 +137,7 @@ export function useTimer(settings: TimerSettings = initialSettings) {
 
   const handleTimerComplete = useCallback(async () => {
     const currentSettings = settingsRef.current;
-    
+
     if (currentSettings.notifications) {
       if (state.sessionType === 'work') {
         notify('Work Session Complete!', 'Time for a break. Great job!', 'sessionComplete');
@@ -185,10 +185,10 @@ export function useTimer(settings: TimerSettings = initialSettings) {
 
   const resumeTimer = useCallback(() => {
     if (workerRef.current && state.isPaused) {
-      workerRef.current.postMessage({ action: 'RESUME' });
+      workerRef.current.postMessage({ action: 'RESUME', payload: { duration: state.currentTime } });
       dispatch({ type: 'START' });
     }
-  }, [state.isPaused]);
+  }, [state.isPaused, state.currentTime]);
 
   const resetTimer = useCallback(() => {
     if (workerRef.current) {
