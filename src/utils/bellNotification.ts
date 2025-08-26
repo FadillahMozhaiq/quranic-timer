@@ -17,6 +17,7 @@ class BellNotificationManager {
       if (!this.hasUserInteracted) {
         this.hasUserInteracted = true;
         this.initializeAudioContext();
+        this.primeAudioContext();
       }
     };
 
@@ -30,6 +31,19 @@ class BellNotificationManager {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     } catch (error) {
       console.warn('AudioContext initialization failed:', error);
+    }
+  }
+
+  private primeAudioContext(): void {
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
+    }
+
+    if (this.audioContext) {
+      const source = this.audioContext.createBufferSource();
+      source.buffer = this.audioContext.createBuffer(1, 1, 22050);
+      source.connect(this.audioContext.destination);
+      source.start(0);
     }
   }
 
@@ -53,15 +67,15 @@ class BellNotificationManager {
       this.audio = new Audio(NOTIFICATION_SOUNDS.bell);
       this.audio.loop = true;
       this.audio.volume = 1.0;
-      
+
       this.audio.setAttribute('preload', 'auto');
       this.audio.setAttribute('crossorigin', 'anonymous');
-      
+
       this.audio.addEventListener('error', this.handleAudioError);
       this.audio.addEventListener('ended', this.handleAudioEnded);
-      
+
       let playSuccess = false;
-      
+
       try {
         const playPromise = this.audio.play();
         if (playPromise !== undefined) {
@@ -72,11 +86,11 @@ class BellNotificationManager {
       } catch (playError) {
         console.warn('Bell direct play failed:', playError);
       }
-      
+
       if (!playSuccess) {
         try {
           this.audio.load();
-          
+
           await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => reject(new Error('Timeout')), 3000);
             this.audio!.addEventListener('canplay', () => {
@@ -84,7 +98,7 @@ class BellNotificationManager {
               resolve(void 0);
             }, { once: true });
           });
-          
+
           const retryPromise = this.audio.play();
           if (retryPromise !== undefined) {
             await retryPromise;
@@ -95,13 +109,13 @@ class BellNotificationManager {
           console.warn('Bell load-retry approach failed:', retryError);
         }
       }
-      
+
       if (!playSuccess && this.audioContext) {
         try {
           if (this.audioContext.state === 'suspended') {
             await this.audioContext.resume();
           }
-          
+
           const retryPromise = this.audio.play();
           if (retryPromise !== undefined) {
             await retryPromise;
@@ -132,8 +146,8 @@ class BellNotificationManager {
       if (this.audio) {
         this.audio.pause();
         this.audio.currentTime = 0;
-        
-        
+
+
         this.audio.removeEventListener('error', this.handleAudioError);
         this.audio.removeEventListener('ended', this.handleAudioEnded);
         this.audio.src = '';
@@ -174,7 +188,7 @@ class BellNotificationManager {
     }
   };
 
-  
+
 
   private forceCleanup(): void {
     if (this.audio) {
@@ -186,7 +200,7 @@ class BellNotificationManager {
         this.audio.src = '';
         this.audio.load();
         this.audio = null;
-        
+
       } catch (error) {
         console.warn('Error during force cleanup:', error);
         this.audio = null;
